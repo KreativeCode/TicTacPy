@@ -2,6 +2,7 @@ class Board:
     """docstring for Board."""
 
     EMPTYSLOTCHAR = '-'
+    PLAYER_MARKERS = ['X', 'O']
 
     def __init__(self, size):
         self.size = size
@@ -17,13 +18,15 @@ class Board:
             print(row)
         print('\n')
 
-    def place_mark(self, coordinates):
+    def place_mark(self, coordinates, player):
         '''place mark on board'''
         if self.is_slot_open(coordinates):
             x, y = coordinates
-            self.board[x][y] = 'X'
+            self.board[x][y] = self.PLAYER_MARKERS[player]
+            return True
         else:
             print('Slot not empty')
+            return False
 
     def is_board_full(self):
         '''check if board is full'''
@@ -39,13 +42,18 @@ class Board:
             return True
         return False
 
-    def check_win(self, decorator):
+    def check_win(self, player):
         '''check win'''
-        for indexes in self.win_indexes(self.size):
-            if all(self.board[r][c] == decorator for r, c in indexes):
+        for indexes in self.win_indexes():
+            if all(self.board[r][c] == self.PLAYER_MARKERS[player] for r, c in indexes):
+                print('Player '+str(player)+' wins!')
                 return True
-        return False
 
+        if self.is_board_full():
+            print('This round ended in a draw')
+            return True
+
+        return False
 
     def win_indexes(self):
         '''returns a generator containing the possible index combinations
