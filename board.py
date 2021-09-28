@@ -3,15 +3,13 @@ class Board:
 
     EMPTYSLOTCHAR = '-'
 
-    def __init__(self, dimensions):
-        self.height, self.width = dimensions
-        self.board = ''
+    def __init__(self, size):
+        self.size = size
         self.board = self.create_board()
 
     def create_board(self):
         '''creates board'''
-        self.board = [[self.EMPTYSLOTCHAR for i in range(self.height)] for j in range(self.width)]
-        return self.board
+        return [[self.EMPTYSLOTCHAR for i in range(self.size)] for j in range(self.size)]
 
     def print_board(self):
         '''print board'''
@@ -41,6 +39,26 @@ class Board:
             return True
         return False
 
-    def check_win(self):
+    def check_win(self, decorator):
         '''check win'''
-        pass
+        for indexes in self.win_indexes(self.size):
+            if all(self.board[r][c] == decorator for r, c in indexes):
+                return True
+        return False
+
+
+    def win_indexes(self):
+        '''returns a generator containing the possible index combinations
+           for winning in a a few different patterns'''
+
+        #check rows
+        for r in range(self.size):
+            yield [(r, c) for c in range(self.size)]
+        #check columns
+        for c in range(self.size):
+            yield [(r, c) for r in range(self.size)]
+
+        #check diagonal top left to bottom right
+        yield [(i, i) for i in range(self.size)]
+        #check diagonal top right to bottom left
+        yield [(i, self.size - 1 - i) for i in range(self.size)]
