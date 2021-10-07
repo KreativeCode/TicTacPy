@@ -57,8 +57,7 @@ class Board:
 
     def win_indexes(self):
         '''returns a generator containing the possible index combinations
-           for winning in a a few different patterns'''
-
+           for winning in a few different patterns'''
         #check rows
         for r in range(self.size):
             yield [(r, c) for c in range(self.size)]
@@ -70,3 +69,17 @@ class Board:
         yield [(i, i) for i in range(self.size)]
         #check diagonal top right to bottom left
         yield [(i, self.size - 1 - i) for i in range(self.size)]
+
+    def is_input_valid(self, move):
+        '''check if move is valid'''
+        if not self.is_slot_open(move):
+            print('That move has already been made')
+            return False
+
+        x, y = move
+        if x < 0 or y < 0:
+            print('Move can\'t contain negative values')
+            return False
+        elif x > self.size or y > self.size:
+            print('Move can\'t be larger than board size')
+            return False
