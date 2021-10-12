@@ -1,4 +1,4 @@
-class Board:
+class TicTacToe(Game):
     """docstring for Board."""
 
     EMPTYSLOTCHAR = '-'
