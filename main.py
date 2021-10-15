@@ -1,4 +1,4 @@
-from game import Game
+from client import Client
 
-game = Game()
-game.start()
+client = Client()
+client.play_game()

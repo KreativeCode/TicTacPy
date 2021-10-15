@@ -1,4 +1,4 @@
-class TicTacToe(Game):
+class TicTacToe():
     """docstring for Board."""
 
     EMPTYSLOTCHAR = '-'
@@ -6,41 +6,20 @@ class TicTacToe(Game):
 
     def __init__(self, size):
         self.size = size
-        self.board = self.create_board()
+        self.board = self.create_board(size)
 
-    def create_board(self):
+    def create_board(self, size):
         '''creates board'''
-        return [[self.EMPTYSLOTCHAR for i in range(self.size)] for j in range(self.size)]
+        return [[self.EMPTYSLOTCHAR for i in range(size)] for j in range(size)]
 
-    def print_board(self):
-        '''print board'''
-        for row in self.board:
-            print(row)
-        print('\n')
+    def get_board(self):
+        return self.board
 
-    def place_mark(self, coordinates, player):
+    def make_move(self, move, player):
         '''place mark on board'''
-        if self.is_slot_open(coordinates):
-            x, y = coordinates
-            self.board[x][y] = self.PLAYER_MARKERS[player]
-            return True
-        else:
-            print('Slot not empty')
-            return False
-
-    def is_board_full(self):
-        '''check if board is full'''
-        for row in self.board:
-            if self.EMPTYSLOTCHAR in row:
-                return False
-        return True
-
-    def is_slot_open(self, coordinates):
-        '''check if slot on board is empty'''
-        x, y = coordinates
-        if self.board[x][y] == self.EMPTYSLOTCHAR:
-            return True
-        return False
+        x, y = move
+        self.board[x][y] = self.PLAYER_MARKERS[player]
+        return self.board
 
     def check_win(self, player):
         '''check win'''
@@ -70,7 +49,7 @@ class TicTacToe(Game):
         #check diagonal top right to bottom left
         yield [(i, self.size - 1 - i) for i in range(self.size)]
 
-    def is_input_valid(self, move):
+    def validate_move(self, move):
         '''check if move is valid'''
         if not self.is_slot_open(move):
             print('That move has already been made')
@@ -83,3 +62,19 @@ class TicTacToe(Game):
         elif x > self.size or y > self.size:
             print('Move can\'t be larger than board size')
             return False
+
+        return True
+
+    def is_slot_open(self, slot):
+        '''check if slot on board is empty'''
+        x, y = slot
+        if self.board[x][y] == self.EMPTYSLOTCHAR:
+            return True
+        return False
+
+    def is_board_full(self):
+        '''check if board is full'''
+        for row in self.board:
+            if self.EMPTYSLOTCHAR in row:
+                return False
+        return True
